@@ -12,12 +12,30 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-mongoose.set('strictQuery', false);
+// mongoose.connect(process.env.MONGO).then(() => {
+//   console.log("Connected to MongoDB");
+// }).catch((err) => {
+//   console.log("Error: ", + err);
+// });
 
-mongoose.connect(process.env.MONGO).then(() => {
+
+
+mongoose.set('strictQuery', false); // Set strictQuery to false
+
+mongoose.connect(process.env.MONGO, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
+  socketTimeoutMS: 45000 // Increase socket timeout to 45 seconds
+}).then(() => {
   console.log("Connected to MongoDB");
+
+  // Start the server only after the connection is established
+  app.listen(3001, () => {
+    console.log('Server is listening on port 3000...');
+  });
 }).catch((err) => {
-  console.log("Error: ", + err);
+  console.error("Error: ", err); // Properly log the error
 });
 
 const apiKey = process.env.GEMINI_API_KEY;
