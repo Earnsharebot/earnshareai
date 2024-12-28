@@ -8,46 +8,44 @@ import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSli
 
 const SignIn = () => {
 
-    const dispatch = useDispatch();
+    const [formData, setFormData] = useState({});  
     const { loading, error } = useSelector((state) => state.user);
-
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({});
-
-
+    
+    const dispatch = useDispatch();
+  
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.id]: e.target.value });
-        console.log(formData);
+      setFormData({ ...formData, [e.target.id]: e.target.value });
+      console.log(formData);
     };
-
+  
     const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        try {
-            dispatch(signInStart());
-            const res = await fetch("/server/auth/signin", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            });
-            const data = await res.json();
-            console.log(data);
-
-            if (data.success == false) {
-                dispatch(signInFailure(data.message));
-                return;
-            }
-
-            dispatch(signInSuccess(data));
-            navigate("/");
-
-        } catch (error) {
-            dispatch(signInFailure(error.message));
+      e.preventDefault();
+  
+      try {
+        dispatch(signInStart());
+        const res = await fetch("/server/auth/signin", {  
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        const data = await res.json();
+        console.log(data);
+  
+        if (data.success == false) {
+          dispatch(signInFailure(data.message));
+          return;
         }
-
-
+  
+        dispatch(signInSuccess(data));
+        navigate("/");
+        
+      } catch (error) {
+        dispatch(signInFailure(error.message));
+      }
+  
     };
 
 
