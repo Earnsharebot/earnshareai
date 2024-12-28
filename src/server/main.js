@@ -12,11 +12,17 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO).then(() => {
-  console.log("Connected to MongoDB");
-}).catch((err) => {
-  console.log("Error: ", + err);
-});
+
+mongoose
+  .connect(process.env.MONGO)
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => {
+    console.log("Error: " + err);
+  });
+
+
 
 const apiKey = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
