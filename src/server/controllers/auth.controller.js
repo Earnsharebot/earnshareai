@@ -12,6 +12,10 @@ export const signup = async (req, res, next) => {
     await newUser.save();
     res.status(201).json("User created successfully");
   } catch (error) {
+    if (error.code === 11000) {
+      // Duplicate key error
+      return res.status(400).json({ success: false, message: 'Username or email already exists' });
+    }
     next(error);
   }
 };
