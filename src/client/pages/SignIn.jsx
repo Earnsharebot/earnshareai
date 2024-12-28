@@ -40,7 +40,7 @@ const SignIn = () => {
         }
   
         dispatch(signInSuccess(data));
-        navigate("/");
+        navigate("/profile");
         
       } catch (error) {
         dispatch(signInFailure(error.message));
