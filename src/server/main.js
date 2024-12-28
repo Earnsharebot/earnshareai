@@ -9,9 +9,6 @@ import authRouter from "./routes/auth.route.js";
 
 dotenv.config();
 
-const app = express();
-app.use(express.json());
-
 
 mongoose
   .connect(process.env.MONGO)
@@ -21,6 +18,9 @@ mongoose
   .catch((err) => {
     console.log("Error: " + err);
   });
+
+const app = express();
+app.use(express.json());
 
 
 
